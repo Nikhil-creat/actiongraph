@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ActionGraph – Agentic AI that turns meetings into action</title>
+<meta name="description" content="ActionGraph is an agentic AI platform that converts meeting transcripts into decisions, action items, owners, deadlines and risks, with a built-in AI assistant. By Nikhil Chary Sriramoju.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0e0a24">
+<meta property="og:title" content="ActionGraph – Agentic AI for meetings">
+<meta property="og:description" content="Dual-model agent pipeline that turns transcripts into decisions, owners, deadlines and risks.">
+<meta property="og:type" content="website">
+</head>
+<body>
+<header class="hd"><div class="w bar2">
+<a class="logo" href="#top">ActionGraph</a>
+<nav id="nav"><a href="#studio">Studio</a><a href="#assistant">Assistant</a><a href="#agents">Agents</a><a href="#stack">Tech</a><a href="#about">About</a></nav>
+<button class="pill" id="themeBtn" type="button" aria-label="Toggle light or dark theme">Theme</button>
+<button class="pill" id="setBtn" type="button"><span class="dot" id="dot"></span><span id="pillTx">Connect AI</span></button>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="w">
+<p class="badge">AI Project #3 · Agentic · Dual-model</p>
+<h1>Turn meetings into meaningful action.</h1>
+<p class="lead">Paste a transcript. A team of AI agents extracts decisions, action items, owners, deadlines and risks, cross-checks them against the source, and lets you ask questions in plain language.</p>
+<div class="cta"><a class="btn" href="#studio">Open the studio</a><button class="btn g" type="button" id="heroKey">Add Groq or Gemini key</button></div>
+<div class="flow">
+<div><h3>Ingest</h3><p>Paste a transcript from Zoom, Meet or Teams.</p></div>
+<div><h3>Extract</h3><p>Agent 1 finds decisions, tasks, owners, deadlines and risks.</p></div>
+<div><h3>Verify</h3><p>Agent 2 checks every item against the transcript line.</p></div>
+<div><h3>Plan and track</h3><p>Agent 3 writes the summary and next steps. You approve.</p></div>
+</div>
+</div></section>
+
+<section id="studio"><div class="w">
+<h2>Studio</h2>
+<p class="sub">Run the agent pipeline with your own key, or use the offline rule engine with no key at all.</p>
+<div class="demo">
+<div>
+<textarea id="tx" aria-label="Meeting transcript"></textarea>
+<div class="row"><button class="btn" id="runAI" type="button">Run agent pipeline</button><button class="btn g" id="runLocal" type="button">Run offline engine</button><button class="btn g" id="sample" type="button">Load sample</button><button class="btn g" id="upload" type="button">Upload .txt or .vtt</button><input type="file" id="file" accept=".txt,.vtt,.srt,.md" hidden></div>
+<div class="row"><button class="btn g" id="expCsv" type="button">Export CSV</button><button class="btn g" id="expJson" type="button">Export JSON</button></div>
+<p class="note" id="runNote"></p>
+</div>
+<div class="panel">
+<div class="stats" id="stats"></div>
+<div class="tabs" role="tablist" id="tabs"></div>
+<div id="out"><div class="empty">Choose Run agent pipeline or Run offline engine.</div></div>
+</div>
+</div>
+</div></section>
+
+<section id="assistant"><div class="w">
+<h2>AI assistant</h2>
+<p class="sub">Ask about the meeting you analyzed. Answers use only the transcript and cite line numbers.</p>
+<div class="chat">
+<div class="msgs" id="msgs" aria-live="polite"><div class="m bot">Run the studio first, then ask me things like “What did Alex commit to?” or “Which items have no owner?”</div></div>
+<div class="sugg" id="sugg"><button type="button">What are the open risks?</button><button type="button">Which items have no owner?</button><button type="button">Draft a follow-up email</button></div>
+<div class="send"><input id="q" type="text" placeholder="Ask about this meeting" aria-label="Ask the assistant"><button class="btn" id="ask" type="button">Send</button></div>
+</div>
+</div></section>
+
+<section id="agents"><div class="w">
+<h2>How the agents work</h2>
+<p class="sub">Three specialists with one job each. If a model returns bad JSON, the agent retries once. If a provider fails, the other one takes over.</p>
+<div class="feat">
+<div><h3>Extractor</h3><p>Reads numbered transcript lines and returns structured JSON, including implicit tasks like “someone should look into this”.</p></div>
+<div><h3>Critic</h3><p>Runs on the second model when you connect both keys. Removes items the transcript does not support, fixes owners and lowers confidence.</p></div>
+<div><h3>Planner</h3><p>Writes the summary, the next steps and a ready-to-send follow-up email.</p></div>
+<div><h3>Model detection</h3><p>Paste any key. “gsk_” keys go to Groq, “AIza” keys go to Gemini. The app lists the models on your account and picks the best current one.</p></div>
+<div><h3>Grounded assistant</h3><p>Retrieves the most relevant transcript lines for each question, then answers with citations.</p></div>
+<div><h3>Human review</h3><p>Items with no owner, no date or low confidence are flagged. Nothing is final until you tick it.</p></div>
+</div></div></section>
+
+<section id="stack"><div class="w">
+<h2>Technology</h2>
+<p class="sub">Static front end for free hosting. The same design scales to a service backend.</p>
+<div class="stack"><span>Groq API (Llama, GPT-OSS)</span><span>Google Gemini API</span><span>Multi-agent orchestration</span><span>JSON-schema outputs</span><span>Retrieval over transcript lines</span><span>Auto model discovery</span><span>Provider failover</span><span>Vanilla JS, zero build step</span><span>GitHub Pages</span><span>Responsive, light and dark</span></div>
+<pre>transcript ─► Extractor (Groq) ─► Critic (Gemini) ─► Planner (Groq) ─► review board
+                   │                    │                  │
+                   └──── retries + provider failover ──────┘
+question ─► line retrieval ─► Assistant (best available model) ─► cited answer</pre>
+</div></section>
+
+<section id="about"><div class="w">
+<h2>About the builder</h2>
+<div class="about">
+<div>
+<h3>Nikhil Chary Sriramoju</h3>
+<p>Final-year B.Tech student in Computer Science and Engineering. I build agentic AI systems, secure infrastructure and full-stack products, and ship them from my phone with Termux and GitHub Pages.</p>
+<div class="row"><a class="btn" href="https://github.com/Nikhil-creat" target="_blank" rel="noopener">GitHub</a><a class="btn g" href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a" target="_blank" rel="noopener">LinkedIn</a><a class="btn g" href="mailto:sriramojunikhil66@gmail.com">Email</a></div>
+</div>
+<div>
+<h3>Certifications and simulations</h3>
+<ul class="cert">
+<li>Forage: PwC Technology Consulting and Cyber Security, Datacom Cyber Security Operations and AI Accelerator, Clifford Chance, British Airways Data Science, Latham &amp; Watkins, Deloitte Data Analytics and Technology</li>
+<li>NASSCOM and Skill India: IT Forensic Analyst, Cloud Infrastructure Analyst, Endpoint Security, Blockchain Architect, Product Manager</li>
+<li>Reliance Foundation: AI-ML Engineer Foundation, IoT Security Specialist, Industry 4.0 Robotics</li>
+<li>NIELIT Yuva AI for All · Thiranex Data Analytics internship · Power BI (PHN Technology)</li>
+</ul>
+</div>
+</div>
+<h3 class="ph">More projects</h3>
+<div class="proj">
+<div><b>APEX-AI</b><span>Agentic multimodal assistant with GraphRAG and MCP</span></div>
+<div><b>BastionMesh AI</b><span>Multi-agent mesh with consensus and CNN vision</span></div>
+<div><b>SecureNav-NEXUS</b><span>Secure autonomous robot and drone stack</span></div>
+<div><b>PharmAi Vision</b><span>Medicine identifier with CNN, ViT and OCR</span></div>
+<div><b>Raft KV Store</b><span>Distributed key-value store with anomaly detection</span></div>
+<div><b>VigilAI Engine Mesh</b><span>LLM serving with QoS gateway and observability</span></div>
+<div><b>StreamGuard</b><span>Real-time fraud detection pipeline</span></div>
+<div><b>CareFlow</b><span>Hospital automation with AI chatbot</span></div>
+</div>
+</div></section>
+</main>
+
+<footer><div class="w foot">
+<div><b>ActionGraph</b><br>Meet less. Achieve more.</div>
+<div><a href="#studio">Studio</a> · <a href="#assistant">Assistant</a> · <a href="#about">About</a></div>
+<div>© 2026 Nikhil Chary Sriramoju · <a href="https://github.com/Nikhil-creat" target="_blank" rel="noopener">GitHub</a></div>
+</div></footer>
+
+<dialog id="dlg">
+<h3>Connect AI</h3>
+<p class="note">Paste a Groq key (starts with gsk_) or a Gemini key (starts with AIza). Keys stay in this browser and go only to the provider.</p>
+<div class="row"><input id="key" type="password" autocomplete="off" placeholder="Paste key" aria-label="API key"><button class="btn" id="addKey" type="button">Detect and add</button></div>
+<div id="prov"></div>
+<p class="note" id="keyMsg"></p>
+<div class="row"><button class="btn g" id="closeDlg" type="button">Close</button></div>
+</dialog>
+<script src="assets/ai.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
